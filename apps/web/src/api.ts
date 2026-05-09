@@ -23,7 +23,7 @@ import type {
   ShiftLedger,
   UpdateRatePlanInput,
   UpdateRoomConfigInput
-} from "@hotel-os/shared";
+} from "@hostal-os-pms/shared";
 
 const configuredApiUrl = import.meta.env.VITE_API_URL as string | undefined;
 const isLocalBrowser = ["localhost", "127.0.0.1", "::1"].includes(window.location.hostname);

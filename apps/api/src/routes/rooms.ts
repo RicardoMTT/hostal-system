@@ -1,5 +1,5 @@
 import type { FastifyInstance } from "fastify";
-import { addChargeSchema, checkInSchema, checkOutSchema, roomConfigSchema, roomRangeSchema, updateRoomConfigSchema, updateRoomStatusSchema } from "@hotel-os/shared";
+import { addChargeSchema, checkInSchema, checkOutSchema, roomConfigSchema, roomRangeSchema, updateRoomConfigSchema, updateRoomStatusSchema } from "@hostal-os-pms/shared";
 import { requireAuth } from "../auth.js";
 import { addCharge, checkIn, checkOut } from "../services/stay.service.js";
 import { createRoom, createRoomRange, deleteRoom, getAvailableRates, getRoom, listRooms, setRoomStatus, updateRoom } from "../services/room.service.js";

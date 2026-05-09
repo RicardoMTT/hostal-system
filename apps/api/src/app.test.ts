@@ -8,7 +8,7 @@ test("health endpoint responds", async () => {
   await app.close();
 
   assert.equal(response.statusCode, 200);
-  assert.deepEqual(response.json(), { ok: true, service: "hotel-os-api" });
+  assert.deepEqual(response.json(), { ok: true, service: "hostal-os-pms-api" });
 });
 
 test("new /api routes are registered and protected", async () => {

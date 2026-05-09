@@ -1,4 +1,4 @@
-import type { RoomStatus } from "@hotel-os/shared";
+import type { RoomStatus } from "@hostal-os-pms/shared";
 
 export function validateRoomConfigStatus(status?: RoomStatus, openStayCount = 0) {
   if (status === "OCCUPIED" && openStayCount === 0) {

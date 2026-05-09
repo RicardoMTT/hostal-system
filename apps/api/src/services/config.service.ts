@@ -1,4 +1,4 @@
-import type { ConfigScope, DayGroupInput, HourPlanInput, OvertimeRuleInput, RateConfigInput, RoomTypeInput } from "@hotel-os/shared";
+import type { ConfigScope, DayGroupInput, HourPlanInput, OvertimeRuleInput, RateConfigInput, RoomTypeInput } from "@hostal-os-pms/shared";
 import { audit } from "../audit.js";
 import { prisma } from "../db.js";
 import { encodeDaysOfWeek, parseDaysOfWeek } from "../domain/rates.js";

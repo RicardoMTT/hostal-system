@@ -70,7 +70,7 @@ export async function createApp() {
   });
   await app.register(rateLimit, { max: 120, timeWindow: "1 minute" });
 
-  app.get("/health", async () => ({ ok: true, service: "hotel-os-api" }));
+  app.get("/health", async () => ({ ok: true, service: "hostal-os-pms-api" }));
 
   await registerApiRoutes(app);
   await app.register(async (apiApp) => registerApiRoutes(apiApp), { prefix: "/api" });

@@ -1,8 +1,8 @@
-# Hotel OS
+# Hostal OS PMS
 
-Production-oriented hotel administration system for room control, reception, guest registration, products, charges, inventory and reports.
+Hostal OS PMS is free software for hotel and hostel operations: room control, reception, guest registration, products, charges, inventory and reports.
 
-The old standalone HTML prototype remains in `../index.html`. This folder is the real application framework.
+This repository contains the current application framework.
 
 ## Stack
 
@@ -12,14 +12,14 @@ The old standalone HTML prototype remains in `../index.html`. This folder is the
 - Realtime sync: Socket.IO events + TanStack Query cache invalidation
 - Shared contracts: Zod schemas and TypeScript types
 
-PostgreSQL is now the source of truth. Rooms, room groups, day groups, hour plans, rates and overtime rules are read from the API/DB and mirrored into the UI through query invalidation and realtime events.
+PostgreSQL is the source of truth. Rooms, room groups, day groups, hour plans, rates and overtime rules are read from the API and database and mirrored into the UI through query invalidation and realtime events.
 
 ## First Run
 
 PowerShell blocks `npm.ps1` on this PC, so use `npm.cmd`.
 
 ```powershell
-cd C:\Users\usuario\Desktop\hotel-dashboard\hotel-os
+cd C:\ruta\Hostal-OS-PMS
 copy .env.example .env
 copy apps\api\.env.example apps\api\.env
 copy apps\web\.env.example apps\web\.env
@@ -31,7 +31,7 @@ npm.cmd run db:seed
 npm.cmd run dev
 ```
 
-If Docker is not installed on the machine, install PostgreSQL locally and create a database named `hotel_os`, then keep the same `DATABASE_URL` format.
+If Docker is not installed on the machine, install PostgreSQL locally and create a database named `hostal_os_pms`, then keep the same `DATABASE_URL` format.
 
 Then open:
 
@@ -46,3 +46,12 @@ Demo login:
 - Password: `admin123`
 
 Change this password and `JWT_SECRET` before production.
+
+## License
+
+This project is free software released under the Apache License 2.0.
+
+- License: `Apache-2.0`
+- Copyright holder: `Hans Kevin Lindo Huayhua`
+
+See [LICENSE](LICENSE) and [NOTICE](NOTICE).

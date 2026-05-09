@@ -1,4 +1,4 @@
-import type { RoomConfigInput, RoomRangeInput, RoomStatus, UpdateRoomConfigInput } from "@hotel-os/shared";
+import type { RoomConfigInput, RoomRangeInput, RoomStatus, UpdateRoomConfigInput } from "@hostal-os-pms/shared";
 import { audit } from "../audit.js";
 import { prisma } from "../db.js";
 import { ConflictError, NotFoundError } from "../errors.js";

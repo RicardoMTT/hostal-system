@@ -1,6 +1,6 @@
 import type { FastifyInstance } from "fastify";
-import type { ApiRatePlan } from "@hotel-os/shared";
-import { assignRatePlanRoomsSchema, createRatePlanSchema, updateRatePlanSchema } from "@hotel-os/shared";
+import type { ApiRatePlan } from "@hostal-os-pms/shared";
+import { assignRatePlanRoomsSchema, createRatePlanSchema, updateRatePlanSchema } from "@hostal-os-pms/shared";
 import { audit } from "../audit.js";
 import { prisma } from "../db.js";
 import { encodeDaysOfWeek, parseDaysOfWeek } from "../rates.js";

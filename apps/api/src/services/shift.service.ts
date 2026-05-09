@@ -1,4 +1,4 @@
-import type { PaymentMethod, ShiftLedger } from "@hotel-os/shared";
+import type { PaymentMethod, ShiftLedger } from "@hostal-os-pms/shared";
 import { prisma } from "../db.js";
 import { getOrCreateCurrentShift } from "../shift.js";
 

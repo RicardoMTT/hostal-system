@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, type FormEvent, type ReactNode } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { BedDouble, LogOut, Plus, RefreshCw, Sparkles, X } from "lucide-react";
-import type { ApiAvailableRate, ApiDayGroup, ApiHourPlan, ApiOvertimeRule, ApiProduct, ApiRate, ApiRateConfigRoom, ApiRoom, ApiRoomType, ComputedRoomStatus, GuestHistory, PaymentMethod, RoomStatus, ShiftLedger } from "@hotel-os/shared";
+import type { ApiAvailableRate, ApiDayGroup, ApiHourPlan, ApiOvertimeRule, ApiProduct, ApiRate, ApiRateConfigRoom, ApiRoom, ApiRoomType, ComputedRoomStatus, GuestHistory, PaymentMethod, RoomStatus, ShiftLedger } from "@hostal-os-pms/shared";
 import { ApiError, api, type ConfigState, type Session } from "./api.js";
 import { queryKeys } from "./queryClient.js";
 import { useRealtimeSync } from "./realtime.js";
@@ -34,7 +34,7 @@ function localDateTime(value: string | null) {
 
 export function App() {
   const [session, setSession] = useState<Session | null>(() => {
-    const saved = localStorage.getItem("hotel-os-session");
+    const saved = localStorage.getItem("hostal-os-pms-session");
     return saved ? JSON.parse(saved) as Session : null;
   });
   const [activeRoomId, setActiveRoomId] = useState<string | null>(null);
@@ -112,19 +112,19 @@ export function App() {
   }, [error]);
 
   function saveSession(next: Session) {
-    localStorage.setItem("hotel-os-session", JSON.stringify(next));
+    localStorage.setItem("hostal-os-pms-session", JSON.stringify(next));
     setSession(next);
   }
 
   function logout() {
-    localStorage.removeItem("hotel-os-session");
+    localStorage.removeItem("hostal-os-pms-session");
     setSession(null);
     queryClient.clear();
     setActiveRoomId(null);
   }
 
   function expireSession() {
-    localStorage.removeItem("hotel-os-session");
+    localStorage.removeItem("hostal-os-pms-session");
     setSession(null);
     queryClient.clear();
     setActiveRoomId(null);
@@ -153,7 +153,7 @@ export function App() {
     <div className="app">
       <header className="nav">
         <div className="brand notranslate" translate="no" lang="en">
-          <BedDouble size={21} /> <span>KENTY PMS</span>
+          <BedDouble size={21} /> <span>Hostal OS PMS</span>
         </div>
         <nav className="nav-tabs">
           <button className={activeTab === "reception" ? "active" : ""} type="button" onClick={() => setActiveTab("reception")}>Reception</button>
@@ -918,7 +918,7 @@ function LoginScreen({ onLogin }: { onLogin: (session: Session) => void }) {
     <main className="login-shell">
       <form className="login-panel" onSubmit={submit}>
         <div className="login-mark"><Sparkles size={24} /></div>
-        <h1>KENTY PMS</h1>
+        <h1>Hostal OS PMS</h1>
         <p>Sign in to manage reception operations.</p>
         {error && <div className="alert">{error}</div>}
         <label>

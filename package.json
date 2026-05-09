@@ -1,7 +1,9 @@
 {
-  "name": "hotel-os",
+  "name": "hostal-os-pms",
   "version": "0.1.0",
   "private": true,
+  "license": "Apache-2.0",
+  "author": "Hans Kevin Lindo Huayhua",
   "type": "module",
   "workspaces": [
     "apps/*",

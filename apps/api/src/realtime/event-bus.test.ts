@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import type { DomainEvent } from "@hotel-os/shared";
+import type { DomainEvent } from "@hostal-os-pms/shared";
 import { onDomainEvent, publishDomainEvent } from "./event-bus.js";
 
 test("domain event bus publishes subscribed events", () => {

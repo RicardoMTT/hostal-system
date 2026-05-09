@@ -1,5 +1,5 @@
 import type { FastifyInstance } from "fastify";
-import { dayGroupSchema, hourPlanSchema, overtimeRuleSchema, rateConfigSchema, roomTypeSchema } from "@hotel-os/shared";
+import { dayGroupSchema, hourPlanSchema, overtimeRuleSchema, rateConfigSchema, roomTypeSchema } from "@hostal-os-pms/shared";
 import { requireAuth } from "../auth.js";
 import {
   createDayGroup,

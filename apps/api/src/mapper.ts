@@ -1,5 +1,5 @@
 import type { Room, Stay, Guest, Charge, Payment, RoomType } from "@prisma/client";
-import type { ApiRoom } from "@hotel-os/shared";
+import type { ApiRoom } from "@hostal-os-pms/shared";
 import { selectCurrentRate, type RateAssignment } from "./rates.js";
 
 type StayWithGuestAndCharges = Stay & {

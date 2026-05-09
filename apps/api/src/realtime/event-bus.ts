@@ -1,5 +1,5 @@
 import { EventEmitter } from "node:events";
-import type { DomainEvent } from "@hotel-os/shared";
+import type { DomainEvent } from "@hostal-os-pms/shared";
 
 const eventBus = new EventEmitter();
 const domainEventName = "domain-event";

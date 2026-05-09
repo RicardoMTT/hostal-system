@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { io } from "socket.io-client";
-import type { DomainEvent } from "@hotel-os/shared";
+import type { DomainEvent } from "@hostal-os-pms/shared";
 import { API_URL, type Session } from "./api.js";
 import { queryKeys } from "./queryClient.js";
 

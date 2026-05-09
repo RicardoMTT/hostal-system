@@ -1,7 +1,9 @@
 {
-  "name": "@hotel-os/shared",
+  "name": "@hostal-os-pms/shared",
   "version": "0.1.0",
   "private": true,
+  "license": "Apache-2.0",
+  "author": "Hans Kevin Lindo Huayhua",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

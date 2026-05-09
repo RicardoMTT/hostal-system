@@ -1,5 +1,5 @@
 import type { FastifyInstance } from "fastify";
-import type { GuestHistory } from "@hotel-os/shared";
+import type { GuestHistory } from "@hostal-os-pms/shared";
 import { requireAuth } from "../auth.js";
 import { prisma } from "../db.js";
 

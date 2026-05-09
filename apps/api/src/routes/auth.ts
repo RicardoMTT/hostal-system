@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import type { FastifyInstance } from "fastify";
-import { loginSchema } from "@hotel-os/shared";
+import { loginSchema } from "@hostal-os-pms/shared";
 import { createToken, requireAuth } from "../auth.js";
 import { prisma } from "../db.js";
 

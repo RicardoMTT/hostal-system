@@ -1,4 +1,4 @@
-import type { AddChargeInput, CheckInInput, CheckOutInput } from "@hotel-os/shared";
+import type { AddChargeInput, CheckInInput, CheckOutInput } from "@hostal-os-pms/shared";
 import { audit } from "../audit.js";
 import { prisma } from "../db.js";
 import { calculateOvertime } from "../domain/overtime.js";

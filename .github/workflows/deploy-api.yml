@@ -59,4 +59,3 @@ jobs:
           app-name: "hostal-os-pms-api"
           publish-profile: ${{ secrets.AZURE_API_PUBLISH_PROFILE }}
           package: "./deploy_artifact"
-          startup-command: "bash startup.sh"

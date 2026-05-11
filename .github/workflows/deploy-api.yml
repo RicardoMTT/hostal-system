@@ -38,6 +38,11 @@ jobs:
       - name: Compilar API
         run: npm --workspace apps/api run build
 
+      - name: Verificar estructura del build
+        run: |
+          echo "=== Contenido de apps/api/dist ==="
+          find apps/api/dist -name "*.js" | head -20
+
       - name: Ejecutar migraciones de base de datos
         run: npm --workspace apps/api run db:deploy
         env:
@@ -64,7 +69,7 @@ jobs:
           cp -r packages/shared/dist deploy_artifact/packages/shared/dist
           cp    packages/shared/package.json deploy_artifact/packages/shared/package.json
 
-          # node_modules — reemplazar symlink de shared con la carpeta real
+          # node_modules — reemplazar symlink de shared con carpeta real
           cp -r node_modules deploy_artifact/node_modules
           rm -rf deploy_artifact/node_modules/@hostal-os-pms
           mkdir -p deploy_artifact/node_modules/@hostal-os-pms/shared/dist
@@ -72,12 +77,10 @@ jobs:
           cp    packages/shared/package.json deploy_artifact/node_modules/@hostal-os-pms/shared/package.json
 
           echo "=== Verificando artefacto ==="
-          echo "--- dist/src ---"
-          ls deploy_artifact/apps/api/dist/src/
+          echo "--- dist ---"
+          find deploy_artifact/apps/api/dist -name "*.js" | head -10
           echo "--- @hostal-os-pms/shared ---"
           ls deploy_artifact/node_modules/@hostal-os-pms/shared/dist/
-          echo "--- .prisma/client ---"
-          ls deploy_artifact/node_modules/.prisma/client/ | head -5
 
       - name: Deploy a Azure App Service
         uses: azure/webapps-deploy@v3

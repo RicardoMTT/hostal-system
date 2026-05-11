@@ -50,7 +50,10 @@ export async function createApp() {
     return reply.code(500).send({ message: "Internal server error" });
   });
 
-  await app.register(helmet);
+  await app.register(helmet, {
+    crossOriginResourcePolicy: false
+  });
+
   await app.register(cors, {
     origin: (origin, callback) => {
       if (!origin) {
@@ -59,20 +62,24 @@ export async function createApp() {
       }
 
       const allowedOrigin = config.webOrigins.includes(origin)
-        || /^http:\/\/(localhost|127\.0\.0\.1|\[::1\]):\d+$/.test(origin)
+        || /^https?:\/\/(localhost|127\.0\.0\.1|\[::1\]):\d+$/.test(origin)
         || /^http:\/\/(10\.\d{1,3}\.\d{1,3}\.\d{1,3}|172\.(1[6-9]|2\d|3[0-1])\.\d{1,3}\.\d{1,3}|192\.168\.\d{1,3}\.\d{1,3}):\d+$/.test(origin);
 
+      app.log.info({ origin, allowed: allowedOrigin, webOrigins: config.webOrigins }, "CORS check");
       callback(null, allowedOrigin);
     },
     credentials: true,
     methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Authorization", "Content-Type"]
+    allowedHeaders: ["Authorization", "Content-Type"],
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+    strictPreflight: false
   });
+
   await app.register(rateLimit, { max: 120, timeWindow: "1 minute" });
 
   app.get("/health", async () => ({ ok: true, service: "hostal-os-pms-api" }));
 
-  // Rutas solo con prefijo /api — eliminado registro duplicado sin prefijo
   await app.register(async (apiApp) => registerApiRoutes(apiApp), { prefix: "/api" });
 
   attachRealtime(app);

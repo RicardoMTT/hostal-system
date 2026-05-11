@@ -153,7 +153,7 @@ export function App() {
     <div className="app">
       <header className="nav">
         <div className="brand notranslate" translate="no" lang="en">
-          <BedDouble size={21} /> <span>Hostal OS PMS</span>
+          <BedDouble size={21} /> <span>Hostal OS PMS 1</span>
         </div>
         <nav className="nav-tabs">
           <button className={activeTab === "reception" ? "active" : ""} type="button" onClick={() => setActiveTab("reception")}>Reception</button>

@@ -59,8 +59,8 @@ export async function createApp() {
       }
 
       const allowedOrigin = config.webOrigins.includes(origin)
-        || /^http:\/\/(localhost|127\.0\.0\.1|\[::1\]):5173$/.test(origin)
-        || /^http:\/\/(10\.\d{1,3}\.\d{1,3}\.\d{1,3}|172\.(1[6-9]|2\d|3[0-1])\.\d{1,3}\.\d{1,3}|192\.168\.\d{1,3}\.\d{1,3}):5173$/.test(origin);
+        || /^http:\/\/(localhost|127\.0\.0\.1|\[::1\]):\d+$/.test(origin)
+        || /^http:\/\/(10\.\d{1,3}\.\d{1,3}\.\d{1,3}|172\.(1[6-9]|2\d|3[0-1])\.\d{1,3}\.\d{1,3}|192\.168\.\d{1,3}\.\d{1,3}):\d+$/.test(origin);
 
       callback(null, allowedOrigin);
     },
@@ -72,8 +72,9 @@ export async function createApp() {
 
   app.get("/health", async () => ({ ok: true, service: "hostal-os-pms-api" }));
 
-  await registerApiRoutes(app);
+  // Rutas solo con prefijo /api — eliminado registro duplicado sin prefijo
   await app.register(async (apiApp) => registerApiRoutes(apiApp), { prefix: "/api" });
+
   attachRealtime(app);
 
   return app;

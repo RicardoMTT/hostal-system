@@ -38,6 +38,13 @@ jobs:
       - name: Compilar API
         run: npm --workspace apps/api run build
 
+      - name: Verificar build
+        run: |
+          echo "=== Contenido de apps/api/dist ==="
+          ls -la apps/api/dist || echo "ERROR: dist no existe"
+          echo "=== server.js existe? ==="
+          ls -la apps/api/dist/server.js || echo "ERROR: server.js no encontrado"
+
       - name: Ejecutar migraciones de base de datos
         run: npm --workspace apps/api run db:deploy
         env:
@@ -45,26 +52,30 @@ jobs:
 
       - name: Preparar artefacto de deploy
         run: |
-          mkdir -p deploy_artifact
+          mkdir -p deploy_artifact/apps/api
+          mkdir -p deploy_artifact/packages/shared
 
-          # Archivos raiz necesarios
+          # Raiz
           cp package.json deploy_artifact/
           cp startup.sh deploy_artifact/
           chmod +x deploy_artifact/startup.sh
 
-          # API compilada y su package.json
-          mkdir -p deploy_artifact/apps/api
+          # API: dist + prisma + package.json
           cp -r apps/api/dist deploy_artifact/apps/api/dist
           cp -r apps/api/prisma deploy_artifact/apps/api/prisma
           cp apps/api/package.json deploy_artifact/apps/api/package.json
 
           # Shared compilado
-          mkdir -p deploy_artifact/packages/shared
           cp -r packages/shared/dist deploy_artifact/packages/shared/dist
           cp packages/shared/package.json deploy_artifact/packages/shared/package.json
 
-          # node_modules (incluyendo .prisma/client generado)
+          # node_modules completo (incluye .prisma/client)
           cp -r node_modules deploy_artifact/node_modules
+
+          echo "=== Verificando artefacto ==="
+          ls -la deploy_artifact/
+          ls -la deploy_artifact/apps/api/dist/
+          ls -la deploy_artifact/node_modules/.prisma/client/ | head -5
 
       - name: Deploy a Azure App Service
         uses: azure/webapps-deploy@v3

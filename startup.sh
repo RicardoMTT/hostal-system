@@ -1,19 +1,12 @@
 #!/bin/bash
-# Script de inicio para Azure App Service
-# Se ejecuta desde la raíz del repositorio desplegado
-
 set -e
 
 echo "=== Iniciando hostal-os-pms API ==="
-echo "Node version: $(node --version)"
-echo "NPM version: $(npm --version)"
+echo "Node: $(node --version)"
 
-# Ejecutar migraciones de Prisma antes de arrancar
-echo "=== Ejecutando migraciones de base de datos ==="
-cd apps/api
-npx prisma migrate deploy
-cd ../..
+echo "=== Ejecutando migraciones ==="
+cd /home/site/wwwroot
+npx prisma migrate deploy --schema=apps/api/prisma/schema.prisma
 
-# Iniciar la API
 echo "=== Arrancando API ==="
 node apps/api/dist/server.js

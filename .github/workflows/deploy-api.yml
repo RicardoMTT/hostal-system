@@ -46,12 +46,25 @@ jobs:
       - name: Preparar artefacto de deploy
         run: |
           mkdir -p deploy_artifact
-          cp -r apps deploy_artifact/
-          cp -r packages deploy_artifact/
-          cp -r node_modules deploy_artifact/
+
+          # Archivos raiz necesarios
           cp package.json deploy_artifact/
           cp startup.sh deploy_artifact/
           chmod +x deploy_artifact/startup.sh
+
+          # API compilada y su package.json
+          mkdir -p deploy_artifact/apps/api
+          cp -r apps/api/dist deploy_artifact/apps/api/dist
+          cp -r apps/api/prisma deploy_artifact/apps/api/prisma
+          cp apps/api/package.json deploy_artifact/apps/api/package.json
+
+          # Shared compilado
+          mkdir -p deploy_artifact/packages/shared
+          cp -r packages/shared/dist deploy_artifact/packages/shared/dist
+          cp packages/shared/package.json deploy_artifact/packages/shared/package.json
+
+          # node_modules (incluyendo .prisma/client generado)
+          cp -r node_modules deploy_artifact/node_modules
 
       - name: Deploy a Azure App Service
         uses: azure/webapps-deploy@v3

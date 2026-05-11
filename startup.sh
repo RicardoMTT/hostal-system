@@ -9,4 +9,4 @@ cd /home/site/wwwroot
 npx prisma migrate deploy --schema=apps/api/prisma/schema.prisma
 
 echo "=== Arrancando API ==="
-node apps/api/dist/server.js
+node apps/api/dist/src/server.js

@@ -38,13 +38,6 @@ jobs:
       - name: Compilar API
         run: npm --workspace apps/api run build
 
-      - name: Verificar build
-        run: |
-          echo "=== Contenido de apps/api/dist ==="
-          ls -la apps/api/dist || echo "ERROR: dist no existe"
-          echo "=== server.js existe? ==="
-          ls -la apps/api/dist/server.js || echo "ERROR: server.js no encontrado"
-
       - name: Ejecutar migraciones de base de datos
         run: npm --workspace apps/api run db:deploy
         env:
@@ -54,6 +47,7 @@ jobs:
         run: |
           mkdir -p deploy_artifact/apps/api
           mkdir -p deploy_artifact/packages/shared
+          mkdir -p deploy_artifact/node_modules/@hostal-os-pms
 
           # Raiz
           cp package.json deploy_artifact/
@@ -69,13 +63,15 @@ jobs:
           cp -r packages/shared/dist deploy_artifact/packages/shared/dist
           cp packages/shared/package.json deploy_artifact/packages/shared/package.json
 
+          # Copiar shared directamente en node_modules para que Node lo resuelva
+          cp -r packages/shared deploy_artifact/node_modules/@hostal-os-pms/shared
+
           # node_modules completo (incluye .prisma/client)
-          cp -r node_modules deploy_artifact/node_modules
+          cp -r node_modules/. deploy_artifact/node_modules/
 
           echo "=== Verificando artefacto ==="
-          ls -la deploy_artifact/
-          ls -la deploy_artifact/apps/api/dist/
-          ls -la deploy_artifact/node_modules/.prisma/client/ | head -5
+          ls -la deploy_artifact/apps/api/dist/src/
+          ls -la deploy_artifact/node_modules/@hostal-os-pms/
 
       - name: Deploy a Azure App Service
         uses: azure/webapps-deploy@v3

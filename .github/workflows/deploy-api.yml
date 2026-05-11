@@ -40,8 +40,10 @@ jobs:
 
       - name: Verificar estructura del build
         run: |
-          echo "=== Contenido de apps/api/dist ==="
-          find apps/api/dist -name "*.js" | head -20
+          echo "=== Buscando server.js ==="
+          find apps/api/dist -name "server.js"
+          echo "=== Todos los archivos en dist ==="
+          find apps/api/dist -name "*.js"
 
       - name: Ejecutar migraciones de base de datos
         run: npm --workspace apps/api run db:deploy
@@ -52,34 +54,29 @@ jobs:
         run: |
           mkdir -p deploy_artifact
 
-          # Raiz del monorepo
           cp package.json deploy_artifact/
           cp package-lock.json deploy_artifact/
           cp startup.sh deploy_artifact/
           chmod +x deploy_artifact/startup.sh
 
-          # API completa
           mkdir -p deploy_artifact/apps/api
           cp -r apps/api/dist   deploy_artifact/apps/api/dist
           cp -r apps/api/prisma deploy_artifact/apps/api/prisma
           cp    apps/api/package.json deploy_artifact/apps/api/package.json
 
-          # Shared compilado
           mkdir -p deploy_artifact/packages/shared
           cp -r packages/shared/dist deploy_artifact/packages/shared/dist
           cp    packages/shared/package.json deploy_artifact/packages/shared/package.json
 
-          # node_modules — reemplazar symlink de shared con carpeta real
           cp -r node_modules deploy_artifact/node_modules
           rm -rf deploy_artifact/node_modules/@hostal-os-pms
           mkdir -p deploy_artifact/node_modules/@hostal-os-pms/shared/dist
           cp -r packages/shared/dist/. deploy_artifact/node_modules/@hostal-os-pms/shared/dist/
           cp    packages/shared/package.json deploy_artifact/node_modules/@hostal-os-pms/shared/package.json
 
-          echo "=== Verificando artefacto ==="
-          echo "--- dist ---"
-          find deploy_artifact/apps/api/dist -name "*.js" | head -10
-          echo "--- @hostal-os-pms/shared ---"
+          echo "=== Verificando server.js en artefacto ==="
+          find deploy_artifact/apps/api/dist -name "server.js"
+          echo "=== @hostal-os-pms/shared ==="
           ls deploy_artifact/node_modules/@hostal-os-pms/shared/dist/
 
       - name: Deploy a Azure App Service

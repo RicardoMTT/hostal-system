@@ -43,36 +43,41 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
-      - git add .github/workflows/deploy-api.yml
-
+      - name: Preparar artefacto de deploy
         run: |
-          mkdir -p deploy_artifact/apps/api
-          mkdir -p deploy_artifact/packages/shared
-          mkdir -p deploy_artifact/node_modules/@hostal-os-pms
+          mkdir -p deploy_artifact
 
-          # Raiz
+          # Raiz del monorepo
           cp package.json deploy_artifact/
+          cp package-lock.json deploy_artifact/
           cp startup.sh deploy_artifact/
           chmod +x deploy_artifact/startup.sh
 
-          # API: dist + prisma + package.json
-          cp -r apps/api/dist deploy_artifact/apps/api/dist
+          # API completa
+          mkdir -p deploy_artifact/apps/api
+          cp -r apps/api/dist   deploy_artifact/apps/api/dist
           cp -r apps/api/prisma deploy_artifact/apps/api/prisma
-          cp apps/api/package.json deploy_artifact/apps/api/package.json
+          cp    apps/api/package.json deploy_artifact/apps/api/package.json
 
           # Shared compilado
+          mkdir -p deploy_artifact/packages/shared
           cp -r packages/shared/dist deploy_artifact/packages/shared/dist
-          cp packages/shared/package.json deploy_artifact/packages/shared/package.json
+          cp    packages/shared/package.json deploy_artifact/packages/shared/package.json
 
-          # Copiar shared directamente en node_modules para que Node lo resuelva
-          cp -r packages/shared deploy_artifact/node_modules/@hostal-os-pms/shared
-
-          # node_modules completo (incluye .prisma/client)
-          cp -r node_modules/. deploy_artifact/node_modules/
+          # node_modules — reemplazar symlink de shared con la carpeta real
+          cp -r node_modules deploy_artifact/node_modules
+          rm -rf deploy_artifact/node_modules/@hostal-os-pms
+          mkdir -p deploy_artifact/node_modules/@hostal-os-pms/shared/dist
+          cp -r packages/shared/dist/. deploy_artifact/node_modules/@hostal-os-pms/shared/dist/
+          cp    packages/shared/package.json deploy_artifact/node_modules/@hostal-os-pms/shared/package.json
 
           echo "=== Verificando artefacto ==="
-          ls -la deploy_artifact/apps/api/dist/src/
-          ls -la deploy_artifact/node_modules/@hostal-os-pms/
+          echo "--- dist/src ---"
+          ls deploy_artifact/apps/api/dist/src/
+          echo "--- @hostal-os-pms/shared ---"
+          ls deploy_artifact/node_modules/@hostal-os-pms/shared/dist/
+          echo "--- .prisma/client ---"
+          ls deploy_artifact/node_modules/.prisma/client/ | head -5
 
       - name: Deploy a Azure App Service
         uses: azure/webapps-deploy@v3

@@ -1,0 +1,61 @@
+name: Deploy API
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "apps/api/**"
+      - "packages/shared/**"
+      - "startup.sh"
+      - ".github/workflows/deploy-api.yml"
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    name: Build y deploy de la API
+
+    steps:
+      - name: Checkout repositorio
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Compilar packages/shared
+        run: npm --workspace packages/shared run build
+
+      - name: Compilar API
+        run: npm --workspace apps/api run build
+
+      - name: Generar Prisma Client
+        run: npm --workspace apps/api run db:generate
+
+      - name: Ejecutar migraciones de base de datos
+        run: npm --workspace apps/api run db:deploy
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: Preparar artefacto de deploy
+        run: |
+          mkdir -p deploy_artifact
+          cp -r apps deploy_artifact/
+          cp -r packages deploy_artifact/
+          cp -r node_modules deploy_artifact/
+          cp package.json deploy_artifact/
+          cp startup.sh deploy_artifact/
+          chmod +x deploy_artifact/startup.sh
+
+      - name: Deploy a Azure App Service
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: "hostal-os-pms-api"
+          publish-profile: ${{ secrets.AZURE_API_PUBLISH_PROFILE }}
+          package: "./deploy_artifact"
+          startup-command: "bash startup.sh"

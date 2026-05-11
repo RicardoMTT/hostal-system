@@ -25,11 +25,11 @@ import type {
   UpdateRoomConfigInput
 } from "@hostal-os-pms/shared";
 
-const configuredApiUrl = import.meta.env.VITE_API_URL as string | undefined;
-const isLocalBrowser = ["localhost", "127.0.0.1", "::1"].includes(window.location.hostname);
-export const API_URL = configuredApiUrl && isLocalBrowser
-  ? configuredApiUrl
-  : `${window.location.protocol}//${window.location.hostname}:4000`;
+// En desarrollo usa VITE_API_URL (localhost:4000).
+// En producción usa VITE_API_URL del .env.production (URL de Azure App Service).
+// Si por alguna razón no está definida, cae al mismo origen (útil si API y web están en el mismo dominio).
+export const API_URL: string = (import.meta.env.VITE_API_URL as string | undefined) ?? "";
+
 const API_PREFIX = "/api";
 
 export type Session = {

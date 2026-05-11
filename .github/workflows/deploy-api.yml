@@ -9,6 +9,7 @@ on:
       - "packages/shared/**"
       - "startup.sh"
       - ".github/workflows/deploy-api.yml"
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
@@ -31,11 +32,11 @@ jobs:
       - name: Compilar packages/shared
         run: npm --workspace packages/shared run build
 
-      - name: Compilar API
-        run: npm --workspace apps/api run build
-
       - name: Generar Prisma Client
         run: npm --workspace apps/api run db:generate
+
+      - name: Compilar API
+        run: npm --workspace apps/api run build
 
       - name: Ejecutar migraciones de base de datos
         run: npm --workspace apps/api run db:deploy
